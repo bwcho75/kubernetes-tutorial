@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.7.9
+    volumeMounts:
+    - name: nginx-data
+      mountPath: /data/redis
+    ports:
+    - containerPort: 8090
+  volumes:
+  - name: nginx-data
+    persistentVolumeClaim:
+      claimName: helloweb-disk

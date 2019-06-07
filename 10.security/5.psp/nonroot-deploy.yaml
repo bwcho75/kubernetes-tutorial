@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nonroot-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nonroot
+  template:
+    metadata:
+      name: nonroot-pod
+      labels:
+        app: nonroot
+    spec:
+      serviceAccountName: nonroot-sa
+      automountServiceAccountToken: true
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 2001
+      containers:
+      - name: nonroot
+        image: gcr.io/terrycho-sandbox/security-context:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

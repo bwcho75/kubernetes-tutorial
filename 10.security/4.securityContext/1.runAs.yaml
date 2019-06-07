@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: runas
+spec:
+  securityContext:
+    runAsUser: 1001
+    fsGroup: 2001
+  volumes:
+  - name: mydisk
+    emptyDir: {}
+  containers:
+  - name: runas
+    image: gcr.io/terrycho-sandbox/security-context:v1
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: mydisk
+      mountPath: /mydisk
+    ports:
+    - containerPort: 8080

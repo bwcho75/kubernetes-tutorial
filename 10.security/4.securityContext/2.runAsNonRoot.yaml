@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nonroot
+spec:
+  containers:
+  - name: nonroot
+    image: gcr.io/terrycho-sandbox/security-context:v1
+    imagePullPolicy: Always
+    securityContext:
+      runAsNonRoot: true
+    ports:
+    - containerPort: 8080

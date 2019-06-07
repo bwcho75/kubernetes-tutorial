@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: default-role-pod
+spec:
+  containers:
+  - name: pod-reader
+    image: gcr.io/terrycho-sandbox/pod-reader:v1
+    ports:
+    - containerPort: 8080

@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: demo-deployment
+spec:
+  replicas: 3
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: demo-deployment
+  template:
+    metadata:
+      name: demo-deployment-pod
+      labels:
+        app: demo-deployment
+    spec:
+      containers:
+      - name: demo-deployment
+        image: gcr.io/terrycho-sandbox/demo:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

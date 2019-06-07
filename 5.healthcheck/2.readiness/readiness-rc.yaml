@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: readiness-rc
+spec:
+  replicas: 2
+  selector:
+    app: readiness
+  template:
+    metadata:
+      name: readiness-pod
+      labels:
+        app: readiness
+    spec:
+      containers:
+      - name: readiness
+        image: gcr.io/terrycho-sandbox/readiness:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5

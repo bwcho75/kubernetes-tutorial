@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-cm
+data:
+  language: java
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: serviceurl
+data:
+  usershost: users
+  usersport: "8080"
+  ordershost: orders
+  ordersport: "8080"
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      name: users
+      labels:
+        app: users
+    spec:
+      containers:
+      - name: users
+        image: gcr.io/terrycho-istio/users:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: orders-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      name: orders
+      labels:
+        app: orders
+    spec:
+      containers:
+      - name: orders
+        image: gcr.io/terrycho-istio/orders:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8082
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: baskets-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: baskets
+  template:
+    metadata:
+      name: baskets
+      labels:
+        app: baskets
+    spec:
+      containers:
+      - name: baskets
+        image: gcr.io/terrycho-istio/baskets:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: USER_HOST
+          valueFrom:
+            configMapKeyRef:
+               name: serviceurl
+               key: usershost
+        - name: USERS_PORT
+          valueFrom:
+            configMapKeyRef:
+               name: serviceurl
+               key: usersport
+        - name: ORDERS_HOST
+          valueFrom:
+            configMapKeyRef:
+               name: serviceurl
+               key: ordershost
+        - name: ORDERS_PORT
+          valueFrom:
+            configMapKeyRef:
+               name: serviceurl
+               key: ordersport
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users
+spec:
+  selector:
+    app: users
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8081
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8082
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: baskets
+spec:
+  selector:
+    app: baskets
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  type: LoadBalancer

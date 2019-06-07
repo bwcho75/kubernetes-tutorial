@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: root
+  template:
+    metadata:
+      name: root-pod
+      labels:
+        app: root
+    spec:
+      serviceAccountName: nonroot-sa
+      containers:
+      - name: root
+        image: gcr.io/terrycho-sandbox/nonroot-containe:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

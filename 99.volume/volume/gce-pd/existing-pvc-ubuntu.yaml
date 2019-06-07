@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu-slim
+    volumeMounts:
+    - name: terrypath
+      mountPath: /data
+  volumes:
+  - name : terrypath
+    persistentVolumeClaim:
+      claimName: pv-claim-demo

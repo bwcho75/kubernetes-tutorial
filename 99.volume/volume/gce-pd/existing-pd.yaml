@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-demo
+spec:
+  storageClassName:
+  capacity:
+    storage: 20G
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: pv-demo-disk
+    fsType: ext4

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-svc-nginx
+subsets:
+  - addresses:
+    - ip: 35.225.75.124
+    ports:
+    - port: 80

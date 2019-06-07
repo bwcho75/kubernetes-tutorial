@@ -1,0 +1,8 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: users-svc-ingress
+spec:
+  backend:
+    serviceName: users-node-svc
+    servicePort: 80

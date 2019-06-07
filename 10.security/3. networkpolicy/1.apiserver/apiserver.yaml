@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apiserver
+  labels:
+    app: apiserver
+spec:
+  containers:
+  - name: apiserver
+    image: gcr.io/terrycho-sandbox/apiserver:v1
+    ports:
+    - containerPort: 8080

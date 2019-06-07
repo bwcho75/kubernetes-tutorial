@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils
+spec:
+  containers:
+  - name: dnsutils
+    image:  gcr.io/terrycho-sandbox/dnsutils:v1
+    imagePullPolicy: Always

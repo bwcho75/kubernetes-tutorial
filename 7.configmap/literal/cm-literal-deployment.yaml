@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: cm-deployment
+spec:
+  replicas: 3
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: cm-literal
+  template:
+    metadata:
+      name: cm-literal-pod
+      labels:
+        app: cm-literal
+    spec:
+      containers:
+      - name: cm
+        image: gcr.io/terrycho-sandbox/cm:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: LANGUAGE
+          valueFrom:
+            configMapKeyRef:
+               name: hello-cm
+               key: language

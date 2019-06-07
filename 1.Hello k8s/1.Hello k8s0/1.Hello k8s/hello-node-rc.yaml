@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-node-rc
+spec:
+  replicas: 3
+  selector:
+    app: hello-node
+  template:
+    metadata:
+      name: hello-node-pod
+      labels:
+        app: hello-node
+    spec:
+      containers:
+      - name: hello-node
+        image: gcr.io/terrycho-sandbox/hello-node:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

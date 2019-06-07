@@ -1,0 +1,29 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: cm-file-deployment-vol
+spec:
+  replicas: 3
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: cm-file-vol
+  template:
+    metadata:
+      name: cm-file-vol-pod
+      labels:
+        app: cm-file-vol
+    spec:
+      containers:
+      - name: cm-file-vol
+        image: gcr.io/terrycho-sandbox/cm-file-volume:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+          - name: config-profile
+            mountPath: /tmp/config
+      volumes:
+        - name: config-profile
+          configMap:
+            name: cm-file

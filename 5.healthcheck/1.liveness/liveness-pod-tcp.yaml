@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod-tcp
+spec:
+  containers:
+  - name: liveness
+    image: gcr.io/terrycho-sandbox/liveness:v1
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 8080
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5
